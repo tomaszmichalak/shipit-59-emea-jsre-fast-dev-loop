@@ -115,7 +115,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: recommendations-service
+          name: users-service
           path: /tmp/users-service.tar
 
   verify-with-e2e-tests:
