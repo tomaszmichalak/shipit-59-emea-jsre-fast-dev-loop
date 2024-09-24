@@ -188,6 +188,12 @@ jobs:
           cd modules/users-service/chart
           helm install users-service . --wait
 
+      - name: Wait for pods
+        run: |
+          kubectl rollout status deployment recommendations-engine
+          kubectl rollout status deployment recommendations-service
+          kubectl rollout status deployment users-service
+        
       - name: Run E2E tests
         uses: nick-fields/retry@v2
         with:
