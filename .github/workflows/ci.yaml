@@ -128,7 +128,19 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: images
+          name: recommendations-engine
+          path: /tmp
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: recommendations-service
+          path: /tmp
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: users-service
           path: /tmp
 
       - name: Load images
