@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/health"
+  },
+
+  "response": {
+    "status": 200,
+    "body": "HEALTHY",
+    "headers": {
+      "Content-Type": "text/plain"
+    }
+  }
+}

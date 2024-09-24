@@ -1,0 +1,21 @@
+{
+  "priority": 1,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/recommendations/user1"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": [
+      {
+        "id": "test1",
+        "name": "name1",
+        "description": "description1",
+        "url": "url1"
+      }
+    ],
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/user/nonExistingUser@atlassian.com"
+  },
+  "response": {
+    "status": 404,
+    "jsonBody": {
+      "status": "Error",
+      "message": "User not found"
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/user/existingUser@atlassian.com"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "id": "user1",
+      "name": "Bob",
+      "email": "existingUser@atlassian.com"
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
