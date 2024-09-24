@@ -21,9 +21,6 @@ jobs:
           distribution: 'corretto'
           java-version: '21'
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
       - name: Cache Maven packages
         uses: actions/cache@v2
         with:
@@ -32,19 +29,34 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Verify Recommendations Engine
+        run: |
+          cd modules/recommendations-engine/code
+          mvn verify
+
       - name: Install Helm
         run: |
           curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
           chmod 700 get_helm.sh
           ./get_helm.sh
-
-      - name: Verify Recommendations Engine
-        run: |
-          cd modules/recommendations-engine/code
-          mvn verify
-          docker build -t recommendations-engine:latest .
-          cd ../chart
+          cd modules/recommendations-engine/chart
           helm template recommendations-engine . --output-dir=generated
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Recommendations Engine Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: modules/recommendations-engine/code
+          tags: recommendations-engine:latest
+          outputs: type=docker,dest=/.docker/recommendations-engine.tar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: recommendations-engine
+          path: /.docker/recommendations-engine.tar
 
   verify-recommendations-service:
     runs-on: ubuntu-latest
