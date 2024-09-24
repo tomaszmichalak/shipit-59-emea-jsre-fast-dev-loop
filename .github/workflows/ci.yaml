@@ -76,13 +76,24 @@ jobs:
 
   verify-with-e2e-tests:
     runs-on: ubuntu-latest
+    needs: [verify-recommendations-engine, verify-recommendations-service, verify-users-service]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21.9'
 
-      - name: Create ephemeral environment and run E2E tests
-        run: |
-          # Add your E2E test commands here
+      - name: Setup Kind
+        run: go install sigs.k8s.io/kind@v0.22.0
+
+      - name: Create K8s cluster
+        run: kind create cluster --config infra/kind.yaml
+
+      - name: Install Ingress Controller
+        run: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+
+      - name: Wait for Ingress Controller
+        run: kubectl -n ingress-nginx rollout status deployment ingress-nginx-controller
