@@ -90,7 +90,7 @@ jobs:
         run: go install sigs.k8s.io/kind@v0.22.0
 
       - name: Create K8s cluster
-        run: kind create cluster --config infra/kind.yaml
+        run: kind create cluster --config .github/kind.yml
 
       - name: Install Ingress Controller
         run: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml

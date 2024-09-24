@@ -14,7 +14,7 @@ cd "$HOME"/modules/users-service/code || exit
 docker build -t users-service:latest . || exit
 
 
-kind create cluster --config="$HOME"/infra/kind.yml
+kind create cluster --config="$HOME"/.github/kind.yml
 kind load docker-image recommendations-engine:latest
 kind load docker-image recommendations-service:latest
 kind load docker-image users-service:latest
