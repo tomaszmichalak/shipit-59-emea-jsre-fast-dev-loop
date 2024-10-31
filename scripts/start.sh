@@ -32,15 +32,21 @@ kubectl rollout status deployment recommendations-engine
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 kubectl -n ingress-nginx rollout status deployment ingress-nginx-controller
 
+# Verify the API is working and returns the expected response
 
+URL=http://recommendations-engine-127-0-0-1.nip.io/recommendations/existingUser@atlassian.com
+EXPECTED_RESPONSE='[{"id":"test1","name":"name1","description":"description1","url":"url1"}]'
 
-
-# curl service and check if output is Hello World
-response=$(curl -s -X GET http://recommendations-engine-127-0-0-1.nip.io/recommendations/existingUser@atlassian.com)
-
-if [[ "$response" == "Hello World!" ]]; then
-  echo "Service responded with 'Hello World!'"
+response=$(curl -s "$URL")
+if echo "$response" | jq -e . >/dev/null 2>&1; then
+  if [[ "$response" == "$EXPECTED_RESPONSE" ]]; then
+    echo "Response matches the expected JSON."
+  else
+    echo "Response does not match the expected JSON: $response"
+    exit 1
+  fi
 else
-  echo "Service did not respond with 'Hello World'. Response: $response"
+  echo "Response is not a valid JSON: $response"
   exit 1
 fi
+
